@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB connection
-mongoose.connect("mongodb://127.0.0.1:27017/internships", {
+mongoose.connect("mongodb://127.0.0.1:27017/pm-internship-finder", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
