@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an axios instance with base URL
 const api = axios.create({
-  baseURL: "http://192.168.105.63:5000/api", // LAN IP
+  baseURL: "http://localhost:5000/api", // Localhost for development
   headers: { "Content-Type": "application/json" },
 });
 
