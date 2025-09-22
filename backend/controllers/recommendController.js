@@ -1,10 +1,14 @@
 const Internship = require("../models/Internship");
 
-// Simple skill matcher
+// Skill matcher for array or string
 const explainMatch = (userSkills, jobSkills) => {
-  const u = userSkills.split(",").map(s => s.trim().toLowerCase());
-  const j = jobSkills.split(",").map(s => s.trim().toLowerCase());
-  return j.filter(skill => u.includes(skill));
+  const u = Array.isArray(userSkills)
+    ? userSkills.map((s) => s.trim().toLowerCase())
+    : (userSkills || "").split(",").map((s) => s.trim().toLowerCase());
+  const j = Array.isArray(jobSkills)
+    ? jobSkills.map((s) => s.trim().toLowerCase())
+    : (jobSkills || "").split(",").map((s) => s.trim().toLowerCase());
+  return j.filter((skill) => u.includes(skill));
 };
 
 exports.getRecommendations = async (req, res) => {
@@ -12,16 +16,25 @@ exports.getRecommendations = async (req, res) => {
 
   try {
     const internships = await Internship.find(); // fetch all
-    const results = internships.map(job => {
-      const matched = explainMatch(skills || "", job.skills_required || "");
-      return {
-        ...job._doc,
-        matched_skills: matched,
-        score: matched.length
-      };
-    }).sort((a,b) => b.score - a.score).slice(0,10);
-
-    res.json(results);
+    res.json(
+      internships
+        .map((job) => {
+          const matched = explainMatch(skills || [], job.skills_required || []);
+          return {
+            ...job._doc,
+            matched_skills: matched,
+            score: matched.length,
+            // Always send skills_required as array
+            skills_required: Array.isArray(job.skills_required)
+              ? job.skills_required
+              : job.skills_required
+              ? [job.skills_required]
+              : [],
+          };
+        })
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 10)
+    );
   } catch (err) {
     res.status(500).json({ error: "Server error" });
   }

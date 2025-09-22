@@ -9,7 +9,9 @@ const api = axios.create({
 // Function to fetch internship recommendations
 export const getRecommendations = async (profile) => {
   try {
-    const res = await api.post("/recommend", profile); // use the api instance
+    // Send the full profile object, not just skills
+    const res = await api.post("/recommend", profile);
+    console.log("Recommendations fetched:", res.data);
     return res.data;
   } catch (error) {
     console.error("Error fetching recommendations:", error);
