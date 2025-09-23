@@ -7,6 +7,20 @@ const path = require("path");
 const app = express();
 const PORT = 5000;
 
+// Seed internships if DB is empty
+const Internship = require('./models/Internship');
+const fs = require('fs');
+const internshipsPath = path.join(__dirname, 'data', 'internships.json');
+
+mongoose.connection.once('open', async () => {
+  const count = await Internship.countDocuments();
+  if (count === 0 && fs.existsSync(internshipsPath)) {
+    const data = JSON.parse(fs.readFileSync(internshipsPath, 'utf-8'));
+    await Internship.insertMany(data);
+    console.log('Seeded internships to DB');
+  }
+});
+
 // Middleware
 app.use(cors());
 app.use(express.json());

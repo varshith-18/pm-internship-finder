@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Data Analyst Intern",
+    "sector": "Analytics",
+    "location": "Bangalore",
+    "skills_required": ["Python", "SQL", "Excel"],
+    "description": "Assist in data analysis and reporting."
+  },
+  {
+    "title": "Product Analyst Intern",
+    "sector": "Product",
+    "location": "Remote",
+    "skills_required": ["Excel", "Product Management", "Communication"],
+    "description": "Support product team in research and analysis."
+  },
+  {
+    "title": "Data Engineer Intern",
+    "sector": "Engineering",
+    "location": "Hyderabad",
+    "skills_required": ["Python", "ETL", "SQL"],
+    "description": "Work on data pipelines and ETL processes."
+  },
+  {
+    "title": "Frontend Developer Intern",
+    "sector": "Software",
+    "location": "Delhi",
+    "skills_required": ["React", "JavaScript", "CSS"],
+    "description": "Build UI components and web pages."
+  },
+  {
+    "title": "Backend Developer Intern",
+    "sector": "Software",
+    "location": "Remote",
+    "skills_required": ["Node.js", "Express", "MongoDB"],
+    "description": "Develop backend APIs and services."
+  }
+]
