@@ -1,8 +1,14 @@
 import axios from "axios";
 
-// Create an axios instance with base URL
+// Determine backend base URL dynamically
+const BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000/api" // development
+    : `http://${window.location.hostname}:5000/api`; // LAN access
+
+// Create axios instance
 const api = axios.create({
-  baseURL: "http://localhost:5000/api", // Localhost for development
+  baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
 });
 

@@ -1,3 +1,4 @@
+const axios = require('axios');
 const Internship = require("../models/Internship");
 const api = axios.create({
   baseURL: "http://localhost:5000/api",

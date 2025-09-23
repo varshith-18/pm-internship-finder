@@ -27,7 +27,7 @@ app.use("/api/recommend", recommendRoutes);
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 // For any other route, serve index.html from the React build
-app.get("*", (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
