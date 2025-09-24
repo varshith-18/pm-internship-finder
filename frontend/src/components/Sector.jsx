@@ -208,13 +208,13 @@ function Sector({ nextStep, prevStep, setProfile, profile }) {
                   {sector.opportunities.toLocaleString()} jobs
                 </div>
                 
-                {/* Yellow info button */}
+                {/* Professional info button */}
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
                     showChatbotAdvice(sector.name);
                   }}
-                  className="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 text-gray-800 rounded-full text-xs hover:bg-yellow-300 transition-colors duration-200 cursor-pointer flex items-center justify-center font-bold"
+                  className="absolute -top-1 -right-1 w-5 h-5 bg-gray-500 hover:bg-blue-600 text-white rounded-full text-xs transition-all duration-200 cursor-pointer flex items-center justify-center font-bold shadow-sm hover:shadow-md"
                   title="Get sector advice"
                 >
                   i
