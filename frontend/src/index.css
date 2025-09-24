@@ -4,12 +4,16 @@
 
 /* Global body styles */
 body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f4f6f8;
-  color: #1a1a1a;
+  margin: 0 !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  background: #f4f6f8 !important;
+  color: #1a1a1a !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  background: #f4f6f8 !important;
 }
 
 /* Code font */

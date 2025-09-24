@@ -23,16 +23,19 @@ function Education({ profile, setProfile, nextStep, prevStep }) {
   return (
     <div className="step-container">
       <h2 className="text-2xl font-bold text-center mb-6">Select Your Qualification</h2>
-      <div className="flex flex-wrap justify-center gap-6 mb-8">
+      <div className="flex flex-wrap justify-center gap-3 mb-8">
         {qualifications.map((q) => (
           <button
             key={q.name}
             onClick={() => setSelected(q.name)}
-            className={`transition-colors duration-200 px-6 py-5 rounded-xl shadow-md border-2 text-lg font-semibold flex flex-col items-center w-48
-              ${selected === q.name ? "border-indigo-600 bg-indigo-50 text-indigo-700" : "border-gray-200 bg-white text-gray-700"}`}
+            className={`transition-all duration-200 px-4 py-3 rounded-full border-2 text-sm font-medium flex flex-col items-center
+              ${selected === q.name 
+                ? "bg-blue-600 hover:bg-blue-700 text-white border-blue-600 hover:border-blue-700" 
+                : "bg-white hover:bg-gray-100 text-gray-700 border-gray-300 hover:border-blue-400 hover:text-blue-600"
+              }`}
           >
-            <span className="font-bold mb-1">{q.name}</span>
-            <span className="text-sm text-gray-500">{q.opportunities.toLocaleString()} opportunities</span>
+            <span className="font-medium mb-1">{q.name}</span>
+            <span className="text-xs opacity-70">{q.opportunities.toLocaleString()} opportunities</span>
           </button>
         ))}
       </div>

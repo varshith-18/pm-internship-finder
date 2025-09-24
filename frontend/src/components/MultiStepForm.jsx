@@ -4,8 +4,8 @@ import Sector from "./Sector";
 import Education from "./Education";
 import Location from "./Location";
 import Results from "./Results";
-import ProfileProgress from "./ProfileProgress";
 import StepProgress from "./StepProgress";
+import Navbar from "./Navbar";
 
 function MultiStepForm() {
   const [step, setStep] = useState(1);
@@ -16,65 +16,76 @@ function MultiStepForm() {
     locations: ["", "", ""],
   });
 
-  const totalSteps = 4; // Skills, Sector, Education, Location
-
-  // Count completed steps dynamically
-  const completedSteps = [
-    profile.skills.length > 0,
-    profile.sectors.length > 0,
-    !!profile.education,
-    profile.locations.every((l) => l),
-  ].filter(Boolean).length;
-
-  const progress = Math.round((completedSteps / totalSteps) * 100);
+  const totalSteps = 4; // Education, Skills, Sector, Location
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, totalSteps + 1));
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 
+  // Get current step title for mobile navbar
+  const getStepTitle = () => {
+    switch(step) {
+      case 1: return "Education";
+      case 2: return "Skills"; 
+      case 3: return "Sector";
+      case 4: return "Location";
+      case 5: return "Results";
+      default: return "Internship Recommender";
+    }
+  };
+
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-6">
-      {/* Step indicator */}
-      <StepProgress currentStep={step} />
+    <div className="min-h-screen bg-gray-50">
+      {/* Navbar with profile progress */}
+      <Navbar 
+        profile={profile} 
+        currentStep={step} 
+        currentStepTitle={getStepTitle()}
+      />
+      
+      {/* Step Progress Bar */}
+      <StepProgress currentStep={step} profile={profile} />
 
-      {/* Profile progress circle */}
-      <div className="flex justify-end">
-        <ProfileProgress progress={progress} />
+      {/* Main Content */}
+      <div className="py-8">
+        {/* Multi-step forms */}
+        {step === 1 && (
+          <Education
+            profile={profile}
+            setProfile={setProfile}
+            nextStep={nextStep}
+            prevStep={prevStep}
+          />
+        )}
+
+        {step === 2 && (
+          <Skills
+            profile={profile}
+            setProfile={setProfile}
+            nextStep={nextStep}
+            prevStep={prevStep}
+          />
+        )}
+
+        {step === 3 && (
+          <Sector
+            profile={profile}
+            setProfile={setProfile}
+            nextStep={nextStep}
+            prevStep={prevStep}
+          />
+        )}
+
+        {step === 4 && (
+          <Location
+            profile={profile}
+            setProfile={setProfile}
+            nextStep={nextStep}
+            prevStep={prevStep}
+          />
+        )}
+
+        {step === 5 && <Results profile={profile} setStep={setStep} />}
       </div>
-
-      {/* Multi-step forms */}
-      {step === 1 && (
-        <Skills
-          profile={profile}
-          setProfile={setProfile}
-          nextStep={nextStep}
-          prevStep={prevStep}
-        />
-      )}
-      {step === 2 && (
-        <Sector
-          profile={profile}
-          setProfile={setProfile}
-          nextStep={nextStep}
-          prevStep={prevStep}
-        />
-      )}
-      {step === 3 && (
-        <Education
-          profile={profile}
-          setProfile={setProfile}
-          nextStep={nextStep}
-          prevStep={prevStep}
-        />
-      )}
-      {step === 4 && (
-        <Location
-          profile={profile}
-          setProfile={setProfile}
-          nextStep={nextStep}
-          prevStep={prevStep}
-        />
-      )}
-      {step === 5 && <Results profile={profile} />}
     </div>
   );
 }

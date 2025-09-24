@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import GuidelinesModal from "./GuidelinesModal";
+import ProfileProgress from "./ProfileProgress";
 import { useTranslation } from 'react-i18next';
 import '../i18n';
 
-function Navbar() {
+function Navbar({ profile, currentStep, currentStepTitle }) {
   const [showGuidelines, setShowGuidelines] = useState(false);
   const { t, i18n } = useTranslation();
   const [lang, setLang] = useState(i18n.language || 'EN');
@@ -23,38 +24,56 @@ function Navbar() {
     i18n.changeLanguage(newLang);
   };
 
+  // Calculate profile completion percentage
+  const totalSteps = 4;
+  const completedSteps = [
+    profile?.skills?.length > 0,
+    profile?.sectors?.length > 0,
+    !!profile?.education,
+    profile?.locations?.some(l => l)
+  ].filter(Boolean).length;
+  const progress = Math.round((completedSteps / totalSteps) * 100);
+
   return (
-    <nav className="flex justify-between items-center px-6 py-4 bg-white border-b shadow-sm">
-      {/* Left Title */}
-      <div className="flex items-center">
-        <h1 className="text-2xl font-bold text-indigo-700">{t('title')}</h1>
-      </div>
+    <div>
+      <nav className="flex justify-between items-center px-4 md:px-6 py-4 bg-white border-b shadow-sm">
+        {/* Left Title - Full on large screens, step title on small screens */}
+        <div className="flex items-center">
+          <h1 className="text-xl md:text-2xl font-bold text-indigo-700">
+            <span className="hidden md:block">{t('title')}</span>
+            <span className="md:hidden">{currentStepTitle || t('title')}</span>
+          </h1>
+        </div>
 
-      {/* Right Options */}
-      <div className="flex items-center gap-6">
-        {/* Language Switch */}
-        <select
-          aria-label="Select Language"
-          className="px-3 py-1 rounded border text-indigo-700 bg-indigo-50 font-semibold"
-          value={lang}
-          onChange={handleLangChange}
-        >
-          <option value="EN">English</option>
-          <option value="HI">हिंदी</option>
-        </select>
+        {/* Right Options */}
+        <div className="flex items-center gap-3 md:gap-6">
+          {/* Language Switch */}
+          <select
+            aria-label="Select Language"
+            className="px-2 md:px-3 py-1 text-sm md:text-base rounded border text-indigo-700 bg-indigo-50 font-semibold"
+            value={lang}
+            onChange={handleLangChange}
+          >
+            <option value="EN">English</option>
+            <option value="HI">हिंदी</option>
+          </select>
 
-        {/* Guidelines */}
-        <button
-          className="px-4 py-2 rounded bg-indigo-100 text-indigo-700 font-semibold hover:bg-indigo-200"
-          onClick={() => setShowGuidelines(true)}
-        >
-          {t('guidelines')}
-        </button>
+          {/* Guidelines */}
+          <button
+            className="px-2 md:px-4 py-1 md:py-2 text-sm md:text-base rounded bg-indigo-100 text-indigo-700 font-semibold hover:bg-indigo-200 transition-colors"
+            onClick={() => setShowGuidelines(true)}
+          >
+            {t('guidelines')}
+          </button>
 
-        {/* Modal */}
-        {showGuidelines && <GuidelinesModal onClose={() => setShowGuidelines(false)} />}
-      </div>
-    </nav>
+          {/* Profile Progress Ring */}
+          <ProfileProgress progress={progress} />
+        </div>
+      </nav>
+
+      {/* Guidelines Modal */}
+      {showGuidelines && <GuidelinesModal onClose={() => setShowGuidelines(false)} />}
+    </div>
   );
 }
 
