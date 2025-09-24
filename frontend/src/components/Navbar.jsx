@@ -4,7 +4,7 @@ import ProfileProgress from "./ProfileProgress";
 import { useTranslation } from 'react-i18next';
 import '../i18n';
 
-function Navbar({ profile, currentStep, currentStepTitle }) {
+function Navbar({ profile, currentStep: _currentStep, currentStepTitle }) {
   const [showGuidelines, setShowGuidelines] = useState(false);
   const { t, i18n } = useTranslation();
   const [lang, setLang] = useState(i18n.language || 'EN');
@@ -54,8 +54,18 @@ function Navbar({ profile, currentStep, currentStepTitle }) {
             value={lang}
             onChange={handleLangChange}
           >
+            <option value="AS">Assamese</option>
+            <option value="BN">Bengali</option>
             <option value="EN">English</option>
-            <option value="HI">हिंदी</option>
+            <option value="GU">Gujarati</option>
+            <option value="HI">Hindi</option>
+            <option value="KN">Kannada</option>
+            <option value="ML">Malayalam</option>
+            <option value="MR">Marathi</option>
+            <option value="OR">Oriya</option>
+            <option value="PA">Punjabi</option>
+            <option value="TE">Telugu</option>
+            <option value="TA">Tamil</option>
           </select>
 
           {/* Guidelines */}

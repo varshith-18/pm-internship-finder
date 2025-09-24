@@ -27,8 +27,8 @@ function Skills({ nextStep, prevStep, profile, setProfile }) {
 
   // Update form data when skills change
   useEffect(() => {
-    setProfile({ ...profile, skills: selectedSkills });
-  }, [selectedSkills, setProfile, profile]);
+    setProfile(prevProfile => ({ ...prevProfile, skills: selectedSkills }));
+  }, [selectedSkills, setProfile]);
 
   const addSkill = (skill) => {
     console.log('Adding skill:', skill); // Debug log

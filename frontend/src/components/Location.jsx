@@ -60,22 +60,29 @@ function Location({ nextStep, prevStep, setProfile, profile }) {
   const [searchTerms, setSearchTerms] = useState(["", "", ""]);
 
   const handleLocationSelect = (index, location) => {
-    console.log('Selecting location:', location, 'for priority', index + 1); // Debug log
+    console.log('Selecting location:', location, 'for priority', index + 1);
+    console.log('Current locations state before:', locations);
+    
+    // Update locations state
     const newLocs = [...locations];
     newLocs[index] = location;
     setLocations(newLocs);
     
-    // Update profile immediately
-    const updatedProfile = { ...profile, locations: newLocs };
-    setProfile(updatedProfile);
-    
+    // Clear search term for this index
     const newSearchTerms = [...searchTerms];
     newSearchTerms[index] = "";
     setSearchTerms(newSearchTerms);
     
+    // Close dropdown for this index
     const newDropdownOpen = [...dropdownOpen];
     newDropdownOpen[index] = false;
     setDropdownOpen(newDropdownOpen);
+    
+    // Update profile with new locations
+    const updatedProfile = { ...profile, locations: newLocs };
+    setProfile(updatedProfile);
+    
+    console.log('New locations state after:', newLocs);
   };
 
   const handleInputChange = (index, value) => {
@@ -95,14 +102,15 @@ function Location({ nextStep, prevStep, setProfile, profile }) {
   };
 
   const handleInputBlur = (index) => {
+    // Small delay to allow click to register before closing dropdown
     setTimeout(() => {
       const newDropdownOpen = [...dropdownOpen];
       newDropdownOpen[index] = false;
       setDropdownOpen(newDropdownOpen);
-    }, 200);
+    }, 150);
   };
 
-  const getFilteredLocations = (searchTerm, excludeIndex) => {
+  const getFilteredLocations = (searchTerm, _excludeIndex) => {
     const allCities = [];
     Object.entries(locationData).forEach(([state, data]) => {
       // Add state as option
@@ -180,8 +188,15 @@ function Location({ nextStep, prevStep, setProfile, profile }) {
                     const newLocs = [...locations];
                     newLocs[idx] = "";
                     setLocations(newLocs);
+                    
+                    // Also clear the search term for this index
+                    const newSearchTerms = [...searchTerms];
+                    newSearchTerms[idx] = e.target.value;
+                    setSearchTerms(newSearchTerms);
+                  } else {
+                    // Normal search behavior
+                    handleInputChange(idx, e.target.value);
                   }
-                  handleInputChange(idx, e.target.value);
                 }}
                 onFocus={() => handleInputFocus(idx)}
                 onBlur={() => handleInputBlur(idx)}
@@ -193,12 +208,14 @@ function Location({ nextStep, prevStep, setProfile, profile }) {
             {dropdownOpen[idx] && (
               <div 
                 className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto"
-                onMouseDown={(e) => e.preventDefault()} // Prevent input blur when clicking dropdown
               >
                 {getFilteredLocations(searchTerms[idx], idx).slice(0, 10).map((location) => (
                   <div
                     key={location.name}
-                    onClick={() => handleLocationSelect(idx, location.name)}
+                    onMouseDown={(e) => {
+                      e.preventDefault(); // Prevent input from losing focus
+                      handleLocationSelect(idx, location.name);
+                    }}
                     className="px-4 py-3 cursor-pointer hover:bg-indigo-50 border-b border-gray-100 last:border-b-0"
                   >
                     <div className="flex justify-between items-center">
@@ -282,7 +299,7 @@ function Location({ nextStep, prevStep, setProfile, profile }) {
           onClick={handleContinue}
           className="flex items-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
         >
-          Finish <span className="ml-2">✅</span>
+          Finish <span className="ml-2"></span>
         </button>
       </div>
     </div>

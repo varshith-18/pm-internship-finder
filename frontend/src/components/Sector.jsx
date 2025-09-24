@@ -109,13 +109,22 @@ function Sector({ nextStep, prevStep, setProfile, profile }) {
   };
 
   const handleInputBlur = () => {
-    setTimeout(() => setIsDropdownOpen(false), 150);
+    // Increased timeout to allow click to register before closing dropdown
+    setTimeout(() => setIsDropdownOpen(false), 200);
   };
 
   const selectFromDropdown = (sector) => {
+    console.log('Selecting sector from dropdown:', sector.name);
+    console.log('Current selectedSectors:', selectedSectors);
+    
     if (!selectedSectors.includes(sector.name)) {
-      setSelectedSectors([...selectedSectors, sector.name]);
+      const newSelectedSectors = [...selectedSectors, sector.name];
+      setSelectedSectors(newSelectedSectors);
+      console.log('New selectedSectors:', newSelectedSectors);
+    } else {
+      console.log('Sector already selected:', sector.name);
     }
+    
     setSearchTerm('');
     setIsDropdownOpen(false);
   };
@@ -153,7 +162,10 @@ function Sector({ nextStep, prevStep, setProfile, profile }) {
             {filteredSectors.map((sector) => (
               <div
                 key={sector.name}
-                onClick={() => selectFromDropdown(sector)}
+                onMouseDown={(e) => {
+                  e.preventDefault(); // Prevent input from losing focus
+                  selectFromDropdown(sector);
+                }}
                 className="px-4 py-3 cursor-pointer hover:bg-indigo-50 border-b border-gray-100 last:border-b-0"
               >
                 <div className="font-medium text-gray-800">{sector.name}</div>
@@ -284,22 +296,6 @@ function Sector({ nextStep, prevStep, setProfile, profile }) {
           Next <span className="ml-2">➡</span>
         </button>
       </div>
-
-      <style jsx>{`
-        @keyframes slide-up {
-          from {
-            transform: translateY(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateY(0);
-            opacity: 1;
-          }
-        }
-        .animate-slide-up {
-          animation: slide-up 0.3s ease-out;
-        }
-      `}</style>
     </div>
   );
 }
