@@ -169,7 +169,6 @@ function Sector({ nextStep, prevStep, setProfile, profile }) {
         <div className="mb-6">
           <div className="flex flex-wrap gap-3 justify-center max-w-4xl mx-auto">
             {selectedSectors.map((sectorName) => {
-              const sector = sectorsData.find(s => s.name === sectorName);
               return (
                 <div
                   key={sectorName}
